@@ -12,7 +12,6 @@ fn main() {
     }
 }
 
-
 fn fibonacci() -> Fibonacci {
     Fibonacci { curr: 0, next: 1 }
 }
@@ -31,7 +30,6 @@ impl Iterator for Fibonacci {
         Some(old)
     }
 }
-
 
 use std::ops::Mul;
 struct SquaredVec<T>

@@ -26,8 +26,7 @@ impl NameLength {
     fn print(&self) {
         println!(
             "The name '{}' is '{}' characters long",
-            self.name,
-            self.length
+            self.name, self.length
         );
     }
 }

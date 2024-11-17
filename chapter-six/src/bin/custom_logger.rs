@@ -4,9 +4,9 @@ extern crate log;
 use log::{Level, Metadata, Record};
 use std::fs::{File, OpenOptions};
 use std::io::{self, BufWriter, Write};
-use std::{error, fmt, result};
 use std::sync::RwLock;
 use std::time::{SystemTime, UNIX_EPOCH};
+use std::{error, fmt, result};
 
 // This logger will write logs into a file on disk
 struct FileLogger {
@@ -23,7 +23,8 @@ impl log::Log for FileLogger {
 
     fn log(&self, record: &Record) {
         if self.enabled(record.metadata()) {
-            let mut writer = self.writer
+            let mut writer = self
+                .writer
                 .write()
                 .expect("Failed to unlock log file writer in write mode");
             let now = SystemTime::now();
@@ -38,7 +39,8 @@ impl log::Log for FileLogger {
                 timestamp.as_secs(),
                 record.target(),
                 record.args()
-            ).expect("Failed to log to file");
+            )
+            .expect("Failed to log to file");
         }
         self.flush();
     }

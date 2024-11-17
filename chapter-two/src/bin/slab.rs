@@ -18,10 +18,9 @@ fn main() {
     println!("hello_key -> '{}'", slab[hello_key],);
     println!("world_key -> '{}'", slab[world_key],);
 
-
     // You can pass an "empty spot" around
     // in order to be filled
-    let data_key = { 
+    let data_key = {
         let entry = slab.vacant_entry();
         fill_some_data(entry)
     };
@@ -39,7 +38,6 @@ fn main() {
         slab.insert("the slab is not at capacity yet");
     }
 }
-
 
 fn fill_some_data(entry: VacantEntry<&str>) -> usize {
     let data = "Some data";

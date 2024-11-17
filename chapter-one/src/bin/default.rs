@@ -3,7 +3,6 @@ fn main() {
     let foo: i32 = Default::default();
     println!("foo: {}", foo); // Prints "foo: 0"
 
-
     // A struct that derives from Default can be initialized like this
     let pizza: PizzaConfig = Default::default();
     // Prints "wants_cheese: false
@@ -22,7 +21,6 @@ fn main() {
     // Prints "crust_type: Nice and thin"
     println!("crust_type: {}", crust_type);
 
-
     // You can also configure only certain values
     let custom_pizza = PizzaConfig {
         number_of_olives: 12,
@@ -36,7 +34,6 @@ fn main() {
         special_message: "Will you marry me?".to_string(),
         ..Default::default()
     };
-
 }
 
 #[derive(Default)]

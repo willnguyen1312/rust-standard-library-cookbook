@@ -1,10 +1,9 @@
-use std::ops::MulAssign;
 use std::fmt::Display;
+use std::ops::MulAssign;
 
 // This structure doubles all elements it stores
 #[derive(Debug)]
 struct DoubleVec<T>(Vec<T>);
-
 
 // Allowing conversion from a Vec<T>,
 // where T is multipliable with an integer
@@ -40,7 +39,6 @@ impl<T> AsRef<Vec<T>> for DoubleVec<T> {
     }
 }
 
-
 fn main() {
     // The following three are equivalent
     let hello_world = "Hello World".to_string();
@@ -72,7 +70,6 @@ fn main() {
     ergonomic_public_func(1337, 123, None);
 }
 
-
 fn print_elements<T>(slice: &[T])
 where
     T: Display,
@@ -83,17 +80,13 @@ where
     println!();
 }
 
-
 // Easily written but cumbersome to use
 fn easy_public_func(foo: Option<i32>, bar: Option<i32>, baz: Option<i32>) {
     println!(
         "easy_public_func = foo: {:?}, bar: {:?}, baz: {:?}",
-        foo,
-        bar,
-        baz
+        foo, bar, baz
     );
 }
-
 
 // This is quite some extra typing, so it's only worth to do for
 // public functions with many optional parameters
@@ -109,8 +102,6 @@ where
 
     println!(
         "ergonomic_public_func = foo: {:?}, bar: {:?}, baz: {:?}",
-        foo,
-        bar,
-        baz
+        foo, bar, baz
     );
 }

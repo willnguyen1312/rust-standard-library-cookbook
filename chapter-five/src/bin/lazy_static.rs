@@ -28,8 +28,7 @@ fn extract_day(date: &str) -> Option<&str> {
     // compiling regexes only once
     lazy_static! {
         static ref RE: Regex =
-            Regex::new(r"(\d{2}).(\d{2}).(\d{4})")
-            .expect("Failed to create regex");
+            Regex::new(r"(\d{2}).(\d{2}).(\d{4})").expect("Failed to create regex");
     }
     RE.captures(date)
         .and_then(|cap| cap.get(1).map(|day| day.as_str()))

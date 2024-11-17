@@ -11,32 +11,32 @@ fn main() {
 
     println!("All non-hidden file names in this directory:");
     WalkDir::new("../chapter_three")
-    .into_iter()
-    .filter_entry(|entry| !is_hidden(entry)) // Look only at non-hidden enthries
-    .filter_map(Result::ok) // Keep all entries we have access to
-    .for_each(|entry| {
-        // Convert the name returned by theOS into a Rust string
-        // If there are any non-UTF8 symbols in it, replace them with placeholders
-        let name = entry.file_name().to_string_lossy();
-        println!("{}", name)
-    });
+        .into_iter()
+        .filter_entry(|entry| !is_hidden(entry)) // Look only at non-hidden enthries
+        .filter_map(Result::ok) // Keep all entries we have access to
+        .for_each(|entry| {
+            // Convert the name returned by theOS into a Rust string
+            // If there are any non-UTF8 symbols in it, replace them with placeholders
+            let name = entry.file_name().to_string_lossy();
+            println!("{}", name)
+        });
 
     println!("Paths of all subdirectories in this directory:");
     WalkDir::new(".")
-    .into_iter()
-    .filter_entry(is_dir) // Look only at directories
-    .filter_map(Result::ok) // Keep all entries we have access to
-    .for_each(|entry| {
-        let path = entry.path().display();
-        println!("{}", path)
-    });
+        .into_iter()
+        .filter_entry(is_dir) // Look only at directories
+        .filter_map(Result::ok) // Keep all entries we have access to
+        .for_each(|entry| {
+            let path = entry.path().display();
+            println!("{}", path)
+        });
 
     let are_any_readonly = WalkDir::new("..")
-    .into_iter()
-    .filter_map(Result::ok) // Keep all entries we have access to
-    .filter(|e| has_file_name(e, "vector.rs")) // Get the ones with a certain name
-    .filter_map(|e| e.metadata().ok()) // Get metadata if the OS allows it
-    .any(|e| e.permissions().readonly()); // Check if at least one entry is readonly
+        .into_iter()
+        .filter_map(Result::ok) // Keep all entries we have access to
+        .filter(|e| has_file_name(e, "vector.rs")) // Get the ones with a certain name
+        .filter_map(|e| e.metadata().ok()) // Get metadata if the OS allows it
+        .any(|e| e.permissions().readonly()); // Check if at least one entry is readonly
     println!(
         "Are any the files called 'vector.rs' readonly? {}",
         are_any_readonly

@@ -3,8 +3,8 @@ extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 
-use std::io::{BufReader, BufWriter, Read, Seek, SeekFrom, Write};
 use std::fs::OpenOptions;
+use std::io::{BufReader, BufWriter, Read, Seek, SeekFrom, Write};
 
 #[derive(Serialize, Deserialize)]
 struct Planet {

@@ -1,8 +1,8 @@
-use std::sync::Arc;
-use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering, ATOMIC_BOOL_INIT, ATOMIC_USIZE_INIT};
-use std::thread;
-use std::ops::{Deref, DerefMut};
 use std::cell::UnsafeCell;
+use std::ops::{Deref, DerefMut};
+use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering, ATOMIC_BOOL_INIT, ATOMIC_USIZE_INIT};
+use std::sync::Arc;
+use std::thread;
 
 fn main() {
     // Atomics are primitive types suited for

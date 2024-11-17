@@ -1,8 +1,8 @@
 extern crate hyper;
 
-use hyper::{Method, StatusCode};
-use hyper::server::{const_service, service_fn, Http, Request, Response};
 use hyper::header::{ContentLength, ContentType};
+use hyper::server::{const_service, service_fn, Http, Request, Response};
+use hyper::{Method, StatusCode};
 use std::net::SocketAddr;
 
 fn main() {

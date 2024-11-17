@@ -43,7 +43,6 @@ fn main() {
     // ball lives until here
 }
 
-
 fn spawn_kid_with_new_ball() -> Kid {
     let ball = Rc::new(Ball);
     Kid {

@@ -1,8 +1,8 @@
 extern crate futures;
 extern crate futures_util;
 
-use futures::prelude::*;
 use futures::executor::LocalPool;
+use futures::prelude::*;
 use futures::task::{Context, LocalMap, Wake, Waker};
 use futures_util::lock::BiLock;
 
@@ -34,18 +34,24 @@ fn main() {
     let mut cx = Context::new(&mut map, &waker, &mut exec);
 
     let (reader, writer) = split();
-    println!("Lock should be ready for writer: {}",
-             writer.lock.poll_lock(&mut cx).is_ready());
-    println!("Lock should be ready for reader: {}",
-             reader.lock.poll_lock(&mut cx).is_ready());
+    println!(
+        "Lock should be ready for writer: {}",
+        writer.lock.poll_lock(&mut cx).is_ready()
+    );
+    println!(
+        "Lock should be ready for reader: {}",
+        reader.lock.poll_lock(&mut cx).is_ready()
+    );
 
     let mut writer_lock = match writer.lock.lock().poll(&mut cx).unwrap() {
         Async::Ready(t) => t,
         _ => panic!("We should be able to lock with writer"),
     };
 
-    println!("Lock should now be pending for reader: {}",
-             reader.lock.poll_lock(&mut cx).is_pending());
+    println!(
+        "Lock should now be pending for reader: {}",
+        reader.lock.poll_lock(&mut cx).is_pending()
+    );
     *writer_lock = 123;
 
     let mut lock = reader.lock.lock();
@@ -68,6 +74,8 @@ fn main() {
     let reader = reader_lock.unlock();
     let reunited_value = reader.reunite(writer).unwrap();
 
-    println!("After reuniting our locks, the final value is still: {}",
-             reunited_value);
+    println!(
+        "After reuniting our locks, the final value is still: {}",
+        reunited_value
+    );
 }

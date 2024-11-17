@@ -1,10 +1,10 @@
 extern crate futures;
 extern crate futures_util;
 
-use futures::prelude::*;
 use futures::channel::{mpsc, oneshot};
 use futures::executor::block_on;
-use futures::future::{ok, err, join_all, select_all, poll_fn};
+use futures::future::{err, join_all, ok, poll_fn, select_all};
+use futures::prelude::*;
 use futures::stream::iter_result;
 use futures_util::stream::select_all as select_all_stream;
 
@@ -22,7 +22,9 @@ fn join_all_example() {
 
     // For parameters with a lifetime
     fn sum_vecs<'a>(vecs: Vec<&'a [i32]>) -> Box<Future<Item = Vec<i32>, Error = ()> + 'static> {
-        Box::new(join_all(vecs.into_iter().map(|x| Ok::<i32, ()>(x.iter().sum()))))
+        Box::new(join_all(
+            vecs.into_iter().map(|x| Ok::<i32, ()>(x.iter().sum())),
+        ))
     }
 
     let sum_results = block_on(sum_vecs(vec![&[1, 3, 5], &[6, 7, 8], &[0]])).unwrap();
@@ -95,17 +97,17 @@ fn fuse() {
     let mut f = ok::<u32, Never>(123).fuse();
 
     block_on(poll_fn(move |mut cx| {
-            let first_result = f.poll(&mut cx);
-            let second_result = f.poll(&mut cx);
-            let third_result = f.poll(&mut cx);
+        let first_result = f.poll(&mut cx);
+        let second_result = f.poll(&mut cx);
+        let third_result = f.poll(&mut cx);
 
-            println!("first result: {:?}", first_result);
-            println!("second result: {:?}", second_result);
-            println!("third result: {:?}", third_result);
+        println!("first result: {:?}", first_result);
+        println!("second result: {:?}", second_result);
+        println!("third result: {:?}", third_result);
 
-            FINISHED
-        }))
-        .unwrap();
+        FINISHED
+    }))
+    .unwrap();
 }
 
 fn inspect() {
@@ -117,7 +119,8 @@ fn inspect() {
 
 fn chaining() {
     let (tx, rx) = mpsc::channel(3);
-    let f = tx.send(1)
+    let f = tx
+        .send(1)
         .and_then(|tx| tx.send(2))
         .and_then(|tx| tx.send(3));
 
@@ -134,8 +137,7 @@ fn chaining() {
     let stream1 = iter_result(vec![Ok(10), Err(false)]);
     let stream2 = iter_result(vec![Err(true), Ok(20)]);
 
-    let stream = stream1.chain(stream2)
-        .then(|result| Ok::<_, ()>(result));
+    let stream = stream1.chain(stream2).then(|result| Ok::<_, ()>(result));
 
     let result: Vec<_> = block_on(stream.collect()).unwrap();
     println!("Result from chaining our streams together: {:?}", result);

@@ -16,7 +16,6 @@ fn main() {
     // representable on most operating systems
     println!("random_char: {}", random_char);
 
-
     use rand::Rng;
     // We can use a reusable generator
     let mut rng = rand::thread_rng();

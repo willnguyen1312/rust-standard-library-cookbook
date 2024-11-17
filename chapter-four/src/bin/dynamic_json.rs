@@ -1,8 +1,8 @@
 #[macro_use]
 extern crate serde_json;
 
-use std::io::{self, BufRead};
 use std::collections::HashMap;
+use std::io::{self, BufRead};
 
 fn main() {
     // A HashMap is the same as a JSON without any schema

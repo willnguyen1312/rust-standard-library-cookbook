@@ -1,10 +1,10 @@
 extern crate futures;
 
+use futures::channel::oneshot;
+use futures::executor::{block_on, Executor, LocalPool, ThreadPoolBuilder};
+use futures::future::{lazy, ok, FutureResult};
 use futures::prelude::*;
 use futures::task::Context;
-use futures::channel::oneshot;
-use futures::future::{FutureResult, lazy, ok};
-use futures::executor::{block_on, Executor, LocalPool, ThreadPoolBuilder};
 
 use std::cell::Cell;
 use std::rc::Rc;
@@ -98,11 +98,11 @@ fn local_spawns_completed() {
 
     // change our container's status and then send it to our oneshot channel
     exec.spawn_local(lazy(move |_| {
-            container.status = Status::Loaded;
-            tx.send(container).unwrap();
-            FINISHED
-        }))
-        .unwrap();
+        container.status = Status::Loaded;
+        tx.send(container).unwrap();
+        FINISHED
+    }))
+    .unwrap();
 
     container = pool.run_until(rx, &mut exec).unwrap();
     new_status("local_spanws_completed", container.status);
@@ -122,7 +122,8 @@ fn local_nested() {
     let mut exec_2 = pool.executor();
 
     let _ = exec.spawn_local(lazy(move |_| {
-        exec_2.spawn_local(lazy(move |_| {
+        exec_2
+            .spawn_local(lazy(move |_| {
                 let mut container = cnt_2.get();
                 container.status = Status::Loaded;
 

@@ -1,11 +1,11 @@
 extern crate futures;
 
-use futures::prelude::*;
-use futures::future::poll_fn;
 use futures::executor::block_on;
+use futures::future::poll_fn;
+use futures::prelude::*;
 use futures::sink::flush;
 use futures::stream::iter_ok;
-use futures::task::{Waker, Context};
+use futures::task::{Context, Waker};
 
 use std::mem;
 
@@ -14,9 +14,10 @@ fn vector_sinks() {
     let result = vector.start_send(0);
     let result2 = vector.start_send(7);
 
-    println!("vector_sink: results of sending should both be Ok(()): {:?} and {:?}",
-             result,
-             result2);
+    println!(
+        "vector_sink: results of sending should both be Ok(()): {:?} and {:?}",
+        result, result2
+    );
     println!("The entire vector is now {:?}", vector);
 
     // Now we need to flush our vector sink.
@@ -36,8 +37,10 @@ fn vector_sinks() {
     println!("Our vector should already have one element: {:?}", vector);
 
     let result = block_on(vector.send(2)).unwrap();
-    println!("We can still send to our stick to ammend values: {:?}",
-             result);
+    println!(
+        "We can still send to our stick to ammend values: {:?}",
+        result
+    );
 
     let vector = Vec::new();
     let send_all = vector.send_all(iter_ok(vec![1, 2, 3]));
@@ -57,7 +60,8 @@ fn mapping_sinks() {
     let sink = block_on(sink.send(5)).unwrap();
     println!("sink with() value: {:?}", sink.into_inner());
 
-    let sink = Vec::new().with_flat_map(|elem| iter_ok(vec![elem; elem].into_iter().map(|y| y * y)));
+    let sink =
+        Vec::new().with_flat_map(|elem| iter_ok(vec![elem; elem].into_iter().map(|y| y * y)));
 
     let sink = block_on(sink.send(0)).unwrap();
     let sink = block_on(sink.send(3)).unwrap();
@@ -147,8 +151,10 @@ fn manual_flush() {
         println!("Our sink after trying to flush: {:?}", sink.get_ref());
 
         let results = sink.get_mut().force_flush();
-        println!("Sink data after manually flushing: {:?}",
-                 sink.get_ref().data);
+        println!(
+            "Sink data after manually flushing: {:?}",
+            sink.get_ref().data
+        );
         println!("Final results of sink: {:?}", results);
 
         Ok(Async::Ready(Some(())))

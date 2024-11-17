@@ -1,9 +1,9 @@
+use std::error::Error;
+use std::fmt::Debug;
 use std::fs::File;
 use std::io::BufReader;
-use std::result::Result;
-use std::error::Error;
 use std::io::Read;
-use std::fmt::Debug;
+use std::result::Result;
 
 #[derive(Debug)]
 struct Node<T> {

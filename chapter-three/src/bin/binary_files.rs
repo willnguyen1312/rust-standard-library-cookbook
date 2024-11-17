@@ -1,9 +1,8 @@
 extern crate byteorder;
 use byteorder::{ByteOrder, ReadBytesExt, WriteBytesExt, BE, LE};
 use std::fs::File;
-use std::io::{self, BufReader, BufWriter, Read};
 use std::io::prelude::*;
-
+use std::io::{self, BufReader, BufWriter, Read};
 
 fn main() {
     let path = "./bar.bin";
@@ -37,7 +36,6 @@ fn write_dummy_protocol(path: &str) -> io::Result<()> {
 
     Ok(())
 }
-
 
 fn read_protocol(path: &str) -> io::Result<Vec<u32>> {
     let file = File::open(path)?;

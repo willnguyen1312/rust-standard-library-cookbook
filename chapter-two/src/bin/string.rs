@@ -17,7 +17,7 @@ fn main() {
     // A String in Rust will always be valid UTF-8
     let s = "汉语 한글 Þjóðhildur 😉 🍺".to_string();
     println!("s: {}", s);
-    
+
     // Append strings to each other
     let mut s = "Hello ".to_string();
     s.push_str("World");
@@ -62,7 +62,7 @@ fn main() {
     // it will result in the empty string
     let s: Vec<_> = "::Hi::There::".split("::").collect();
     println!("{:?}", s);
-    
+
     // If you can eliminate the empty strings at the end
     // by using split_termitor
     let s: Vec<_> = "Mr. T.".split_terminator('.').collect();
@@ -87,9 +87,15 @@ fn main() {
     // Check if a string starts with something
     let saying = "The early bird gets the worm";
     let starts_with_the = saying.starts_with("The");
-    println!("Does \"{}\" start with \"The\"?: {}", saying, starts_with_the);
+    println!(
+        "Does \"{}\" start with \"The\"?: {}",
+        saying, starts_with_the
+    );
     let starts_with_bird = saying.starts_with("bird");
-    println!("Does \"{}\" start with \"bird\"?: {}", saying, starts_with_bird);
+    println!(
+        "Does \"{}\" start with \"bird\"?: {}",
+        saying, starts_with_bird
+    );
 
     // Check if a string ends with something
     let ends_with_worm = saying.ends_with("worm");
@@ -98,7 +104,6 @@ fn main() {
     // Check if the string contains something somewhere
     let contains_bird = saying.contains("bird");
     println!("Does \"{}\" contain \"bird\"?: {}", saying, contains_bird);
-
 
     // Remove whitespace
 
@@ -119,7 +124,6 @@ fn main() {
     // Remove only trailing whitespace
     let username = "   P3ngu1n\n".trim_right();
     println!("{}", username);
-
 
     // Parse a string into another data type
     // This requires type annotation

@@ -56,7 +56,6 @@ fn main() {
     sentence.push_back("Cat");
     println!("sentence: {:?}", sentence);
 
-
     // The rest of the VecDeque's methods are
     // pretty much the same as the vector's
     // However, the VecDeque has additional options

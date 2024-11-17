@@ -1,6 +1,6 @@
 use std::fs::{File, OpenOptions};
-use std::io::{self, BufReader, BufWriter, Lines, SeekFrom, Write};
 use std::io::prelude::*;
+use std::io::{self, BufReader, BufWriter, Lines, SeekFrom, Write};
 
 fn main() {
     // Create a file and fill it with data
@@ -32,8 +32,6 @@ fn main() {
     append_and_read(path, "Last line in the file, goodbye").expect("Failed to read and write file");
 }
 
-
-
 fn read_file(path: &str) -> io::Result<String> {
     // open() opens the file in read-only mode
     let file = File::open(path)?;
@@ -51,7 +49,6 @@ fn read_file_iterator(path: &str) -> io::Result<Lines<BufReader<File>>> {
     // lines() returns an iterator over lines
     Ok(buf_reader.lines())
 }
-
 
 fn write_file(path: &str, content: &str) -> io::Result<()> {
     // create() opens a file with the standard options
@@ -71,7 +68,6 @@ fn append_file(path: &str, content: &str) -> io::Result<()> {
     buf_writer.write_all(content.as_bytes())?;
     Ok(())
 }
-
 
 fn append_and_read(path: &str, content: &str) -> io::Result<()> {
     let file = OpenOptions::new().read(true).append(true).open(path)?;

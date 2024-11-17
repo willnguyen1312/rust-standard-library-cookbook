@@ -1,7 +1,7 @@
 extern crate futures;
 
 use futures::executor::block_on;
-use futures::future::{join_all, Future, FutureResult, ok};
+use futures::future::{join_all, ok, Future, FutureResult};
 use futures::prelude::*;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -86,9 +86,10 @@ impl Future for Player {
     }
 }
 
-fn async_add_points(player: &mut Player,
-                    points: u32)
-                    -> Box<Future<Item = Player, Error = Never> + Send> {
+fn async_add_points(
+    player: &mut Player,
+    points: u32,
+) -> Box<Future<Item = Player, Error = Never> + Send> {
     // Presuming that player.add_points() will send the points to a
     // database/server over a network and returns an updated
     // player score from the server/database.
@@ -116,10 +117,10 @@ fn main() {
         async_add_points(&mut player1, 5),
         async_add_points(&mut player2, 2),
     ])
-        .then(|x| {
-            println!("First batch of adding points is done.");
-            x
-        });
+    .then(|x| {
+        println!("First batch of adding points is done.");
+        x
+    });
 
     block_on(f).unwrap();
 
@@ -134,22 +135,26 @@ fn main() {
     // in the air or "jumping."
     // Let's make one of our players' status set to the jumping status.
 
-    let f = player2.set_status(PlayerStatus::Jumping).and_then(move |mut new_player2| {
-        async_add_points(&mut player1, 10)
-            .and_then(move |_| {
-                println!("Finished trying to give Player 1 points.");
-                async_add_points(&mut new_player2, 2)
-            })
-            .then(move |new_player2| {
-                println!("Finished trying to give Player 2 points.");
-                println!("Player 1 (Bob) should have a score of 10 and Player 2 (Alice) should \
-                          have a score of 0");
+    let f = player2
+        .set_status(PlayerStatus::Jumping)
+        .and_then(move |mut new_player2| {
+            async_add_points(&mut player1, 10)
+                .and_then(move |_| {
+                    println!("Finished trying to give Player 1 points.");
+                    async_add_points(&mut new_player2, 2)
+                })
+                .then(move |new_player2| {
+                    println!("Finished trying to give Player 2 points.");
+                    println!(
+                        "Player 1 (Bob) should have a score of 10 and Player 2 (Alice) should \
+                          have a score of 0"
+                    );
 
-                // unwrap is used here to since
-                display_scoreboard(vec![&player1, &new_player2.unwrap()]);
-                new_player2
-            })
-    });
+                    // unwrap is used here to since
+                    display_scoreboard(vec![&player1, &new_player2.unwrap()]);
+                    new_player2
+                })
+        });
 
     block_on(f).unwrap();
 

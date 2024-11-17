@@ -1,16 +1,16 @@
 extern crate futures;
 extern crate hyper;
 
-use hyper::{Method, StatusCode};
-use hyper::server::{const_service, service_fn, Http, Request, Response};
+use futures::sync::oneshot;
+use futures::Future;
 use hyper::header::{ContentLength, ContentType};
 use hyper::mime;
-use futures::Future;
-use futures::sync::oneshot;
-use std::net::SocketAddr;
-use std::thread;
+use hyper::server::{const_service, service_fn, Http, Request, Response};
+use hyper::{Method, StatusCode};
 use std::fs::File;
 use std::io::{self, copy};
+use std::net::SocketAddr;
+use std::thread;
 
 fn main() {
     let addr = "[::1]:3000".parse().expect("Failed to parse address");
@@ -132,7 +132,7 @@ fn sanitize_path(path: &str) -> String {
     path.replace("\\", "/")
         // Prevent the user from going up the filesystem
         .replace("../", "")
-        // If the path comes straigh from the router, 
+        // If the path comes straigh from the router,
         // it will begin with a slash
         .trim_left_matches(|c| c == '/')
         // Remove slashes at the end as we only serve files

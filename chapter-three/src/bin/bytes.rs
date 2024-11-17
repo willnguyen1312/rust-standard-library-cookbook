@@ -1,6 +1,6 @@
 extern crate byteorder;
-use std::io::{Cursor, Seek, SeekFrom};
 use byteorder::{BigEndian, LittleEndian, ReadBytesExt, WriteBytesExt};
+use std::io::{Cursor, Seek, SeekFrom};
 
 fn main() {
     let binary_nums = vec![2, 3, 12, 8, 5, 0];
@@ -20,7 +20,6 @@ fn main() {
     buff.write_u8(123).expect("Failed to overwrite a byte");
     println!("After: {:?}", buff);
 
-
     // Set and get the current position
     println!("Old position: {}", buff.position());
     buff.set_position(0);
@@ -32,7 +31,8 @@ fn main() {
 
     // Read and write in specific endianness
     buff.set_position(0);
-    let as_u32 = buff.read_u32::<LittleEndian>()
+    let as_u32 = buff
+        .read_u32::<LittleEndian>()
         .expect("Failed to read bytes");
     println!(
         "First four bytes as u32 in little endian order:\t{}",

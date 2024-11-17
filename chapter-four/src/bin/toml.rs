@@ -2,8 +2,8 @@
 extern crate serde_derive;
 extern crate toml;
 
-use std::io::{BufReader, BufWriter, Read, Seek, SeekFrom, Write};
 use std::fs::OpenOptions;
+use std::io::{BufReader, BufWriter, Read, Seek, SeekFrom, Write};
 
 #[derive(Serialize, Deserialize)]
 struct Preferences {
@@ -101,7 +101,6 @@ where
     let language = &preferences.language;
     println!("  Display language: {}", language.display);
     println!("  Autocorrect priority: {:?}", language.autocorrect);
-
 
     println!("\nPrivacy settings:");
     let privacy = &preferences.privacy;

@@ -1,10 +1,10 @@
 extern crate futures;
 
-use futures::prelude::*;
 use futures::executor::block_on;
+use futures::future::{err, FutureResult};
+use futures::prelude::*;
 use futures::stream;
 use futures::task::Context;
-use futures::future::{FutureResult, err};
 
 struct MyFuture {}
 impl MyFuture {
@@ -71,8 +71,8 @@ fn err_into() {
 }
 
 fn or_else() {
-    if let Err(e) = block_on(or_else_example()
-        .or_else(|_| Err("changed or_else's error message"))) {
+    if let Err(e) = block_on(or_else_example().or_else(|_| Err("changed or_else's error message")))
+    {
         println!("block_on error: {}", e)
     }
 }

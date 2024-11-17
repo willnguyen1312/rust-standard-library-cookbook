@@ -45,8 +45,6 @@ fn main() {
     let second = fruits[1];
     println!("Second fruit: {}", second);
 
-
-
     // Initialize the vector with a value
     // Here, we fill our vector with five zeroes
     let bunch_of_zeroes = vec![0; 5];
@@ -66,8 +64,6 @@ fn main() {
 
     // Check if the vector contains an element
     println!("Does 'names' contain \"Alex\"? {}", names.contains(&"Alex"));
-
-
 
     // Remove consecutive(!) duplicates
     let mut nums = vec![1, 2, 2, 3, 4, 4, 4, 5];
@@ -100,7 +96,6 @@ fn main() {
     // The drained elements are no longer in the vector
     println!("alphabet after being drained: {:?}", alphabet);
 
-
     // Check if a vector is empty
     let mut fridge = vec!["Beer", "Leftovers", "Mayonaise"];
     println!("Is the fridge empty {}", fridge.is_empty());
@@ -130,7 +125,6 @@ fn main() {
     let removed_stuff: Vec<_> = stuff.splice(1..4, stuff_to_insert).collect();
     println!("Spliced stuff: {:?}", stuff);
     println!("Removed stuff: {:?}", removed_stuff);
-
 
     // Optimizations:
     // Initialize the vector with a certain capacity

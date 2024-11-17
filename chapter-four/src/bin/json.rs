@@ -4,8 +4,8 @@ extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
 
-use std::io::{BufReader, BufWriter, Read, Seek, SeekFrom, Write};
 use std::fs::OpenOptions;
+use std::io::{BufReader, BufWriter, Read, Seek, SeekFrom, Write};
 
 #[derive(Serialize, Deserialize)]
 struct PetOwner {
@@ -47,7 +47,6 @@ fn main() {
         .expect("Failed to jump to the beginning of the JSON file");
     read_json(buf_reader).expect("Failed to read JSON");
 }
-
 
 fn write_json<W>(mut writer: W) -> serde_json::Result<()>
 where

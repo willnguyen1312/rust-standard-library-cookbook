@@ -2,11 +2,11 @@ extern crate futures;
 
 use std::thread;
 
-use futures::prelude::*;
+use futures::channel::mpsc;
 use futures::executor::block_on;
 use futures::future::poll_fn;
+use futures::prelude::*;
 use futures::stream::{iter_ok, iter_result};
-use futures::channel::mpsc;
 
 #[derive(Debug)]
 struct QuickStream {
@@ -39,19 +39,19 @@ fn quick_streams() {
 
     // Collect the first poll() call
     block_on(poll_fn(|cx| {
-            let res = quick_stream.poll_next(cx).unwrap();
-            println!("Quick stream's value: {:?}", res);
-            FINISHED
-        }))
-        .unwrap();
+        let res = quick_stream.poll_next(cx).unwrap();
+        println!("Quick stream's value: {:?}", res);
+        FINISHED
+    }))
+    .unwrap();
 
     // Collect the second poll() call
     block_on(poll_fn(|cx| {
-            let res = quick_stream.poll_next(cx).unwrap();
-            println!("Quick stream's next svalue: {:?}", res);
-            FINISHED
-        }))
-        .unwrap();
+        let res = quick_stream.poll_next(cx).unwrap();
+        println!("Quick stream's next svalue: {:?}", res);
+        FINISHED
+    }))
+    .unwrap();
 
     // And now we should be starting from 7 when collecting the rest of the stream
     let result: Vec<_> = block_on(quick_stream.collect()).unwrap();
@@ -77,11 +77,9 @@ fn iterate_streams() {
     let mut count = 1;
     loop {
         match block_on(result_stream.borrow_mut().next()) {
-            Ok((res, _)) => {
-                match res {
-                    Some(r) => println!("iter_result_stream result #{}: {}", count, r),
-                    None => { break }
-                }
+            Ok((res, _)) => match res {
+                Some(r) => println!("iter_result_stream result #{}: {}", count, r),
+                None => break,
             },
             Err((err, _)) => println!("iter_result_stream had an error #{}: {:?}", count, err),
         }
@@ -139,21 +137,27 @@ fn channel_error() {
     }
 
     let (result, rx) = block_on(rx.next()).ok().unwrap();
-    println!("The result of the channel transaction is: {}",
-             result.unwrap());
+    println!(
+        "The result of the channel transaction is: {}",
+        result.unwrap()
+    );
 
     // Now we should be able send to the transaction since we poll'ed a result already
     tx.try_send("hasta la vista").unwrap();
     drop(tx);
 
     let (result, rx) = block_on(rx.next()).ok().unwrap();
-    println!("The next result of the channel transaction is: {}",
-             result.unwrap());
+    println!(
+        "The next result of the channel transaction is: {}",
+        result.unwrap()
+    );
 
     // Pulling more should result in None
     let (result, _) = block_on(rx.next()).ok().unwrap();
-    println!("The last result of the channel transaction is: {:?}",
-             result);
+    println!(
+        "The last result of the channel transaction is: {:?}",
+        result
+    );
 }
 
 fn channel_buffer() {
@@ -172,14 +176,18 @@ fn channel_buffer() {
         // When we're still in "Pending mode" we should not be able
         // to send more messages/values to the receiver
         if tx.start_send(10).unwrap_err().is_full() {
-            println!("transaction could not have been sent to the receiver due \
-                      to being full...");
+            println!(
+                "transaction could not have been sent to the receiver due \
+                      to being full..."
+            );
         }
 
         let result = rx.poll_next(cx).unwrap();
         println!("the first result is: {:?}", result);
-        println!("is transaction ready? {:?}",
-                 tx.poll_ready(cx).unwrap().is_ready());
+        println!(
+            "is transaction ready? {:?}",
+            tx.poll_ready(cx).unwrap().is_ready()
+        );
 
         // We should now be able to send another message since we've pulled
         // the first message into a result/value/variable.

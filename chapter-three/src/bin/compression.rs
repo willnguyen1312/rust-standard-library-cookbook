@@ -1,11 +1,11 @@
 extern crate flate2;
 
-use std::io::{self, SeekFrom};
 use std::io::prelude::*;
+use std::io::{self, SeekFrom};
 
-use flate2::{Compression, FlateReadExt};
-use flate2::write::ZlibEncoder;
 use flate2::read::ZlibDecoder;
+use flate2::write::ZlibEncoder;
+use flate2::{Compression, FlateReadExt};
 
 use std::fs::{File, OpenOptions};
 use std::io::{BufReader, BufWriter, Read};
@@ -41,7 +41,6 @@ fn main() {
         .write_all(&data)
         .expect("Failed to write encoded file");
 
-
     // Jump back to the beginning of the compressed file
     encoded_reader
         .seek(SeekFrom::Start(0))
@@ -57,7 +56,6 @@ fn main() {
         .expect("Failed to write decoded file");
 }
 
-
 fn encode_bytes(bytes: &[u8]) -> io::Result<Vec<u8>> {
     // You can choose your compression algorithm and its efficiency
     let mut encoder = ZlibEncoder::new(Vec::new(), Compression::Default);
@@ -71,7 +69,6 @@ fn decode_bytes(bytes: &[u8]) -> io::Result<Vec<u8>> {
     encoder.read_to_end(&mut buffer)?;
     Ok(buffer)
 }
-
 
 fn encode_file(file: &mut Read) -> io::Result<Vec<u8>> {
     // Files have a built-in encoder

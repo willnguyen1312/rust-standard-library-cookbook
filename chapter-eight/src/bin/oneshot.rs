@@ -1,9 +1,9 @@
 extern crate futures;
 
-use futures::prelude::*;
 use futures::channel::oneshot::*;
 use futures::executor::block_on;
 use futures::future::poll_fn;
+use futures::prelude::*;
 use futures::stream::futures_ordered;
 
 const FINISHED: Result<Async<()>, Never> = Ok(Async::Ready(()));
@@ -50,19 +50,22 @@ fn check_if_ready() {
     let mut rx = Some(rx);
 
     block_on(poll_fn(|cx| {
-            println!("Is the transaction pending? {:?}",
-                     tx.poll_cancel(cx).unwrap().is_pending());
-            drop(rx.take());
+        println!(
+            "Is the transaction pending? {:?}",
+            tx.poll_cancel(cx).unwrap().is_pending()
+        );
+        drop(rx.take());
 
-            let is_ready = tx.poll_cancel(cx).unwrap().is_ready();
-            let is_pending = tx.poll_cancel(cx).unwrap().is_pending();
+        let is_ready = tx.poll_cancel(cx).unwrap().is_ready();
+        let is_pending = tx.poll_cancel(cx).unwrap().is_pending();
 
-            println!("Are we ready? {:?} This means that the pending should be false: {:?}",
-                     is_ready,
-                     is_pending);
-            FINISHED
-        }))
-        .unwrap();
+        println!(
+            "Are we ready? {:?} This means that the pending should be false: {:?}",
+            is_ready, is_pending
+        );
+        FINISHED
+    }))
+    .unwrap();
 }
 
 fn main() {

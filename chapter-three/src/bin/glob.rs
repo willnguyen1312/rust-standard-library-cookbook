@@ -17,7 +17,6 @@ fn main() {
         ..Default::default()
     };
 
-
     println!(
         "All files that contain the word \"ferris\" case insensitive \
          and don't contain an underscore:"

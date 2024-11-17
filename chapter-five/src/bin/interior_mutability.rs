@@ -40,7 +40,6 @@ fn main() {
     // No code running as we are concentrating on the tests instead
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -1,8 +1,8 @@
-use std::sync::{Arc, RwLock};
-use std::net::Ipv6Addr;
 use std::collections::HashMap;
-use std::{thread, time};
+use std::net::Ipv6Addr;
 use std::sync::atomic::{AtomicUsize, Ordering, ATOMIC_USIZE_INIT};
+use std::sync::{Arc, RwLock};
+use std::{thread, time};
 
 // Client holds whatever state your client might have
 struct Client {

@@ -1,6 +1,6 @@
-use std::{error, fmt, io, num, result};
 use std::fs::File;
 use std::io::{BufReader, Read};
+use std::{error, fmt, io, num, result};
 
 #[derive(Debug)]
 // This is going to be our custom Error type
